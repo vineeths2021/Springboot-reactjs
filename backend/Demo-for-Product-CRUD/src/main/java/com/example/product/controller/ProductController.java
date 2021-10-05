@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,11 +62,11 @@ public class ProductController {
 	 * @return List
 	 */
 	@GetMapping("/products")
-	public List<ProductDTO> getProducts() {
+	public List<Product> getProducts() {
 		logger.info("getProducts() API invoked");
 		List<Product> products = service.getProducts();
 
-		return productMapper.toProductDTOs(products);
+		return products;
 	}
 
 	/**
@@ -89,9 +90,16 @@ public class ProductController {
 	 */
 	@DeleteMapping("/product/remove/{id}")
 	public ResponseEntity<HttpStatus> deleteProduct(@PathVariable String id) {
-		logger.info("saveProduct() API invoked");
+		logger.info("deleteProduct() API invoked");
 		service.deleteProduct(id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
+	}
+
+	@PutMapping("/product/{id}")
+	public ResponseEntity<Product> updateProduct(@RequestBody ProductDTO updatedproduct, @PathVariable Long id) {
+		logger.info("updateProduct() API invoked");
+		Product product = service.updateProduct(id, updatedproduct);
+		return ResponseEntity.ok(product);
 	}
 
 }

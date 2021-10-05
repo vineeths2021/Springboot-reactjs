@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.product.entity.Product;
 import com.example.product.exception.ResourceNotFoundException;
+import com.example.product.models.ProductDTO;
 import com.example.product.repository.ProductRepository;
 
 /**
@@ -67,5 +68,17 @@ public class ProductService {
 				.orElseThrow(() -> new ResourceNotFoundException("Not found with id" + id));
 		repository.delete(product);
 		
+	}
+
+	public Product updateProduct(Long id, ProductDTO updatedproduct) {
+		Product oldproduct=repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not found with id"+id));
+		oldproduct.setProductname(updatedproduct.getProductname());
+		oldproduct.setProductdescription(updatedproduct.getProductdescription());
+		oldproduct.setProductrate(updatedproduct.getProductrate());
+		oldproduct.setExpirydate(updatedproduct.getExpirydate());
+		oldproduct.setManufacturedate(updatedproduct.getManufacturedate());
+		oldproduct.setProducttype(updatedproduct.getProducttype());
+		repository.save(oldproduct);
+		return oldproduct;
 	}
 }

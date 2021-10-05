@@ -9,6 +9,10 @@ class ListComponent extends Component {
             }
             {/* Binding to Event handler , see event handlers in react */}
             this.addProduct=this.addProduct.bind(this);
+            this.editProduct=this.editProduct.bind(this);
+        }
+        editProduct(id){
+            this.props.history.push(`/update-product/${id}`);
         }
     componentDidMount(){
         ProductService.getProducts().then((res)=>{
@@ -26,7 +30,7 @@ this.props.history.push('/add-product');
     render() {
         return (
             <div>
-                <h2 className="text-center p-3 mb-2 bg-info text-white">Product List</h2>
+                <h2 className="text-center ">Product List</h2>
                 <div className="col">
                     <button className="btn btn-primary" onClick={this.addProduct}>Add Product</button>
                 </div>
@@ -53,7 +57,10 @@ this.props.history.push('/add-product');
                                          <td>{product.productrate}</td>  
                                          <td>{product.producttype}</td>  
                                          <td>{product.manufacturedate}</td>   
-                                         <td>{product.expirydate}</td>     
+                                         <td>{product.expirydate}</td>    
+                                         <td>
+                                             <button onClick={ () => this.editProduct(product.productid)} className="btn btn-info">Update</button>
+                                         </td> 
                                      </tr>   
                                 )
                             }
